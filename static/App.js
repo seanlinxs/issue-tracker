@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -20,12 +20,12 @@ var IssueFilter = function (_React$Component) {
   }
 
   _createClass(IssueFilter, [{
-    key: 'render',
+    key: "render",
     value: function render() {
       return React.createElement(
-        'div',
+        "div",
         null,
-        'This is a placeholder for the Issue Filter.'
+        "This is a placeholder for the Issue Filter."
       );
     }
   }]);
@@ -33,8 +33,45 @@ var IssueFilter = function (_React$Component) {
   return IssueFilter;
 }(React.Component);
 
-var IssueTable = function (_React$Component2) {
-  _inherits(IssueTable, _React$Component2);
+var IssueRow = function (_React$Component2) {
+  _inherits(IssueRow, _React$Component2);
+
+  function IssueRow() {
+    _classCallCheck(this, IssueRow);
+
+    return _possibleConstructorReturn(this, (IssueRow.__proto__ || Object.getPrototypeOf(IssueRow)).apply(this, arguments));
+  }
+
+  _createClass(IssueRow, [{
+    key: "render",
+    value: function render() {
+      var borderedStyle = {
+        border: "1px solid silver",
+        padding: 4
+      };
+
+      return React.createElement(
+        "tr",
+        null,
+        React.createElement(
+          "td",
+          { style: borderedStyle },
+          this.props.issue_id
+        ),
+        React.createElement(
+          "td",
+          { style: borderedStyle },
+          this.props.issue_title
+        )
+      );
+    }
+  }]);
+
+  return IssueRow;
+}(React.Component);
+
+var IssueTable = function (_React$Component3) {
+  _inherits(IssueTable, _React$Component3);
 
   function IssueTable() {
     _classCallCheck(this, IssueTable);
@@ -43,12 +80,40 @@ var IssueTable = function (_React$Component2) {
   }
 
   _createClass(IssueTable, [{
-    key: 'render',
+    key: "render",
     value: function render() {
+      var borderedStyle = {
+        border: "1px solid silver",
+        padding: 6
+      };
+
       return React.createElement(
-        'div',
-        null,
-        'This is a placeholder for a table of issues.'
+        "table",
+        { style: { borderCollapse: "collapse" } },
+        React.createElement(
+          "thead",
+          null,
+          React.createElement(
+            "tr",
+            null,
+            React.createElement(
+              "th",
+              { style: borderedStyle },
+              "Id"
+            ),
+            React.createElement(
+              "th",
+              { style: borderedStyle },
+              "Title"
+            )
+          )
+        ),
+        React.createElement(
+          "tbody",
+          null,
+          React.createElement(IssueRow, { issue_id: 1, issue_title: "Error in console when clicking Add" }),
+          React.createElement(IssueRow, { issue_id: 2, issue_title: "Missing bottom border on panel" })
+        )
       );
     }
   }]);
@@ -56,8 +121,8 @@ var IssueTable = function (_React$Component2) {
   return IssueTable;
 }(React.Component);
 
-var IssueAdd = function (_React$Component3) {
-  _inherits(IssueAdd, _React$Component3);
+var IssueAdd = function (_React$Component4) {
+  _inherits(IssueAdd, _React$Component4);
 
   function IssueAdd() {
     _classCallCheck(this, IssueAdd);
@@ -66,12 +131,12 @@ var IssueAdd = function (_React$Component3) {
   }
 
   _createClass(IssueAdd, [{
-    key: 'render',
+    key: "render",
     value: function render() {
       return React.createElement(
-        'div',
+        "div",
         null,
-        'This is a placeholder for an Issue Add entry form.'
+        "This is a placeholder for an Issue Add entry form."
       );
     }
   }]);
@@ -79,8 +144,8 @@ var IssueAdd = function (_React$Component3) {
   return IssueAdd;
 }(React.Component);
 
-var IssueList = function (_React$Component4) {
-  _inherits(IssueList, _React$Component4);
+var IssueList = function (_React$Component5) {
+  _inherits(IssueList, _React$Component5);
 
   function IssueList() {
     _classCallCheck(this, IssueList);
@@ -89,20 +154,20 @@ var IssueList = function (_React$Component4) {
   }
 
   _createClass(IssueList, [{
-    key: 'render',
+    key: "render",
     value: function render() {
       return React.createElement(
-        'div',
+        "div",
         null,
         React.createElement(
-          'h1',
+          "h1",
           null,
-          'Issue Tracker'
+          "Issue Tracker"
         ),
         React.createElement(IssueFilter, null),
-        React.createElement('hr', null),
+        React.createElement("hr", null),
         React.createElement(IssueTable, null),
-        React.createElement('hr', null),
+        React.createElement("hr", null),
         React.createElement(IssueAdd, null)
       );
     }
