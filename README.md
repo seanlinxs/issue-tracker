@@ -4,7 +4,7 @@
 
 This application tracks issues raised from users. It is like a simplified JIRA which is focusing on key functionalities - Tracking Issues.
 
-The goal is more streaming and easier to use.
+The goal is a smoother and easier to use issue tracking system. In my projects, replace JIRA.
 
 ## Technologies
 
