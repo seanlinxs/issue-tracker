@@ -76,8 +76,19 @@ const issues = [
 class IssueList extends React.Component {
   constructor() {
     super();
-    this.state = { issues: issues };
+    this.state = { issues: [] };
+
     setTimeout(this.createTestIssue.bind(this), 2000);
+  }
+
+  componentDidMount() {
+    this.loadData();
+  }
+
+  loadData() {
+    setTimeout(() => {
+      this.setState({ issues: issues });
+    }, 500);
   }
 
   createIssue(newIssue) {
