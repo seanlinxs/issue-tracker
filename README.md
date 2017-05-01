@@ -43,4 +43,3 @@ Modularize and build the client-side code into a bundle to deliver to the browse
 `ESlint` - Ensure that the code follows conventions
 
 `express-session` - Simple session middleware for Express
-
