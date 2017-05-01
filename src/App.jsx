@@ -78,7 +78,8 @@ class IssueList extends React.Component {
     super();
     this.state = { issues: [] };
 
-    setTimeout(this.createTestIssue.bind(this), 2000);
+    this.createTestIssue = this.createTestIssue.bind(this);
+    setTimeout(this.createTestIssue, 2000);
   }
 
   componentDidMount() {
@@ -112,6 +113,7 @@ class IssueList extends React.Component {
         <IssueFilter />
         <hr />
         <IssueTable issues={this.state.issues} />
+        <button onClick={this.createTestIssue}>Add</button>
         <hr />
         <IssueAdd />
       </div>
