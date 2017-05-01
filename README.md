@@ -35,3 +35,10 @@ React bootstrap components
 ### Webpack
 
 Modularize and build the client-side code into a bundle to deliver to the browser.
+
+### Other tools
+
+`body-parser` - Parse `POST` data in the form of JSON, or form data
+`ESlint` - Ensure that the code follows conventions
+`express-session` - Simple session middleware for Express
+
