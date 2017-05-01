@@ -1,0 +1,29 @@
+{
+  "name": "issue-tracker",
+  "version": "1.0.0",
+  "description": "Issue Tracker focus on simplicity",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seanlinxs/issue-tracker.git"
+  },
+  "keywords": [
+    "Issue",
+    "Tracker",
+    "Project",
+    "Issue",
+    "Management"
+  ],
+  "author": "Sean Lin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/seanlinxs/issue-tracker/issues"
+  },
+  "homepage": "https://github.com/seanlinxs/issue-tracker#readme",
+  "dependencies": {
+    "express": "^4.15.2"
+  }
+}
