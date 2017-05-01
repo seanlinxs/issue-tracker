@@ -2,9 +2,9 @@
 
 ## What is it
 
-This application track issues raised from users, like JIRA but focus only on key functionalities - Tracking Issue.
+This application tracks issues raised from users. It is like a simplified JIRA which is focusing on key functionalities - Tracking Issues.
 
-Thus it's more streaming and easier to use.
+The goal is more streaming and easier to use.
 
 ## Technologies
 
@@ -39,6 +39,8 @@ Modularize and build the client-side code into a bundle to deliver to the browse
 ### Other tools
 
 `body-parser` - Parse `POST` data in the form of JSON, or form data
+
 `ESlint` - Ensure that the code follows conventions
+
 `express-session` - Simple session middleware for Express
 
