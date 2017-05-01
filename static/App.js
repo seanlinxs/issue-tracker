@@ -114,7 +114,12 @@ var IssueTable = function (_React$Component3) {
           React.createElement(
             IssueRow,
             { issue_id: 1 },
-            "Error in console when clicking Add"
+            "Error in console when clicking ",
+            React.createElement(
+              "b",
+              null,
+              "Add"
+            )
           ),
           React.createElement(
             IssueRow,

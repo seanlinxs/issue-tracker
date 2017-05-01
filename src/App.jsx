@@ -40,7 +40,7 @@ class IssueTable extends React.Component {
           </tr>
         </thead>
         <tbody>
-          <IssueRow issue_id={1}>Error in console when clicking Add</IssueRow>
+          <IssueRow issue_id={1}>Error in console when clicking <b>Add</b></IssueRow>
           <IssueRow issue_id={2}>Missing bottom border on panel</IssueRow>
         </tbody>
       </table>

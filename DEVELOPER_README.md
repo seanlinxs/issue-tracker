@@ -14,4 +14,4 @@ Always use property validations when passing data from one component to another.
 
 Use default property values when needed.
 
-Use `this.props.children` to access nested components.
+Use `this.props.children` to access nested components. Which is alternative way to pass data from one component to another. You can pass formatted HTML contents instead of plain string in this way.
