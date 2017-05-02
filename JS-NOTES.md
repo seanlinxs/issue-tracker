@@ -17,3 +17,5 @@ Never skip the `catch` block when using promises. If you do so, any runtime erro
 `path.resolve`
 
 `eslint`
+
+`for..in` loops iterate over the entire prototype chain, which is virtually never what you want. Use `Object.{keys,values,entries}`, and iterate over the resulting array.
