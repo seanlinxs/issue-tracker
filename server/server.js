@@ -7,6 +7,8 @@ import { MongoClient } from 'mongodb';
 import Issue from './issue.js';
 
 const app = express();
+let db;
+
 app.use(express.static('static'));
 app.use(bodyParser.json());
 
@@ -48,8 +50,6 @@ app.post('/api/issues', (req, res) => {
       res.status(500).json({ message: `Internal Server Error: ${error}` });
     });
 });
-
-let db;
 
 MongoClient.connect('mongodb://localhost/issue-tracker')
   .then((connection) => {
