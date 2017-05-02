@@ -9,6 +9,8 @@ const app = express();
 app.use(express.static('static'));
 app.use(bodyParser.json());
 
+/**
+ * enable HMR in express server
 if (process.env.NODE_ENV !== 'production') {
   const webpack = require('webpack');
   const webpackDevMiddleware = require('webpack-dev-middleware');
@@ -22,6 +24,7 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(webpackDevMiddleware(bundler, { noInfo: true }));
   app.use(webpackHotMiddleware(bundler, { log: console.log }));
 }
+*/
 
 app.get('/api/issues', (req, res) => {
   db.collection('issues').find().toArray().then(issues => {
