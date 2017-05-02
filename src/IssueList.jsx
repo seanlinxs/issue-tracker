@@ -3,7 +3,7 @@ import 'whatwg-fetch';
 import IssueAdd from './IssueAdd.jsx';
 import IssueFilter from './IssueFilter.jsx';
 
-const IssueRow = (props) => (
+const IssueRow = props => (
   <tr>
     <td>{props.issue._id}</td>
     <td>{props.issue.status}</td>
@@ -15,7 +15,7 @@ const IssueRow = (props) => (
   </tr>
 );
 
-const IssueTable = (props) => (
+const IssueTable = props => (
   <table className="bordered-table">
     <thead>
       <tr>
@@ -47,11 +47,11 @@ export default class IssueList extends React.Component {
   }
 
   loadData() {
-    fetch('/api/issues').then(response => {
+    fetch('/api/issues').then((response) => {
       if (response.ok) {
-        response.json().then(data => {
+        response.json().then((data) => {
           console.log('Total count of records:', data._metadata.total_count);
-          data.records.forEach(issue => {
+          data.records.forEach((issue) => {
             issue.created = new Date(issue.created);
 
             if (issue.completionDate) {
@@ -61,11 +61,11 @@ export default class IssueList extends React.Component {
           this.setState({ issues: data.records });
         });
       } else {
-        response.json().then(error => {
+        response.json().then((error) => {
           alert(`Failed to fetch issues: ${error.message}`);
         });
       }
-    }).catch(err => {
+    }).catch((err) => {
       alert(`Error in fetching data from server: ${err}`);
     });
   }
@@ -77,9 +77,9 @@ export default class IssueList extends React.Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(newIssue),
-    }).then(response => {
+    }).then((response) => {
       if (response.ok) {
-        response.json().then(updatedIssue => {
+        response.json().then((updatedIssue) => {
           updatedIssue.created = new Date(updatedIssue.created);
 
           if (updatedIssue.completionDate) {
@@ -90,11 +90,11 @@ export default class IssueList extends React.Component {
           this.setState({ issues: newIssues });
         });
       } else {
-        response.json().then(error => {
+        response.json().then((error) => {
           alert(`Failed to add issue: ${error.message}`);
         });
       }
-    }).catch(err => {
+    }).catch((err) => {
       alert(`Error in sending data to server: ${err.message}`);
     });
   }
