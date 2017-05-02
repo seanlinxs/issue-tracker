@@ -18,10 +18,11 @@ app.get('/api/issues', (req, res) => {
       _metadata: metadata,
       records: issues
     });
-  }).catch(error => {
-    console.log(error);
-    res.status(500).json({ message: `Internal Server Error: ${error}` });
-  });
+  })
+    .catch(error => {
+      console.log(error);
+      res.status(500).json({ message: `Internal Server Error: ${error}` });
+    });
 });
 
 app.post('/api/issues', (req, res) => {
@@ -43,10 +44,11 @@ app.post('/api/issues', (req, res) => {
     db.collection('issues').find({_id: result.insertedId}).limit(1).next()
   ).then(newIssue => {
     res.json(newIssue);
-  }).catch(error => {
-    console.log(error);
-    res.status(500).json({ message: `Internal Server Error: ${error}` });
-  });
+  })
+    .catch(error => {
+      console.log(error);
+      res.status(500).json({ message: `Internal Server Error: ${error}` });
+    });
 });
 
 let db;
