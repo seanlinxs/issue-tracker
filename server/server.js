@@ -10,8 +10,7 @@ const app = express();
 app.use(express.static('static'));
 app.use(bodyParser.json());
 
-/**
- * enable HMR in express server
+/* enable HMR in express server
 if (process.env.NODE_ENV !== 'production') {
   const webpack = require('webpack');
   const webpackDevMiddleware = require('webpack-dev-middleware');
