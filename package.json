@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/seanlinxs/issue-tracker#readme",
   "dependencies": {
+    "body-parser": "^1.17.1",
     "express": "^4.15.2"
   },
   "devDependencies": {
