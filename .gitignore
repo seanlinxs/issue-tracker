@@ -42,3 +42,6 @@ jspm_packages
 # bundles
 app.bundle.js
 vendor.bundle.js
+
+# dist
+dist
