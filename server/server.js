@@ -1,10 +1,11 @@
 import 'babel-polyfill';
 import SourceMapSupport from 'source-map-support';
-SourceMapSupport.install();
 import express from 'express';
 import bodyParser from 'body-parser';
 import { MongoClient } from 'mongodb';
 import Issue from './issue.js';
+
+SourceMapSupport.install();
 
 const app = express();
 let db;

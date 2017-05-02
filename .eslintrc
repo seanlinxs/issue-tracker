@@ -1,9 +1,11 @@
 {
   "extends": "airbnb",
   "rules": {
+    "no-console": ["off"],
     "no-param-reassign": ["error", { "props": false }],
     "no-restricted-syntax": ["off"],
     "react/forbid-prop-types": ["off"],
-    "no-underscore-dangle": ["error", { "allow": ["_id"] }],
+    "no-underscore-dangle": ["error", { "allow": ["_id", "_metadata"] }],
+    "import/extensions": ["off"],
   },
 }
