@@ -59,7 +59,7 @@ export default class IssueList extends React.Component {
             }
           });
           this.setState({ issues: data.records });
-        })
+        });
       } else {
         response.json().then(error => {
           alert('Failed to fetch issues:' + error.message);
@@ -92,7 +92,7 @@ export default class IssueList extends React.Component {
       } else {
         response.json().then(error => {
           alert('Failed to add issue: ' + error.message);
-        })
+        });
       }
     }).catch(err => {
       alert('Error in sending data to server: ' + err.message);
