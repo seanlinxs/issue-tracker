@@ -17,7 +17,7 @@ const issueFieldType = {
 };
 
 function validateIssue(issue) {
-  for (var field in issue) {
+  for (let field in issue) {
     const type = issueFieldType[field];
 
     if (!type) {
