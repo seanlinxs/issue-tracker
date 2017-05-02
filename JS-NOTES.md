@@ -7,3 +7,5 @@
 `falsy` and `truthy`
 
 `for in` and `for of`
+
+`switch`

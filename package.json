@@ -28,7 +28,8 @@
   "homepage": "https://github.com/seanlinxs/issue-tracker#readme",
   "dependencies": {
     "body-parser": "^1.17.1",
-    "express": "^4.15.2"
+    "express": "^4.15.2",
+    "mongodb": "^2.2.26"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
