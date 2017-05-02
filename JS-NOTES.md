@@ -15,3 +15,5 @@ Never skip the `catch` block when using promises. If you do so, any runtime erro
 `import`
 
 `path.resolve`
+
+`eslint`

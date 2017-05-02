@@ -29,3 +29,7 @@ Multiple routes can be set up to match different URLs and patterns. The router d
 `req.query`: This holds a parsed query string. It's an object with keys as the query string parameters and values as the query string values. Multiple keys with the same name are converted to arrays, and keys with a square bracket notation result in nested objects (e.g., `order[status]=closed` can be accessed as `req.query.order.status`).
 
 `req.body`: This contains the body of the request, valid for `POST`, `PUT`, and `PATCH` requests. Note that the body is not available (`req.body` will be undefined) unless a middleware is installed to read and optionally interpret or parse the body.
+
+### ESLINT
+
+Always run eslint!!!
