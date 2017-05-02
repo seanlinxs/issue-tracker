@@ -35,5 +35,5 @@ function validateIssue(issue) {
 }
 
 export default {
-  validateIssue
+  validateIssue,
 };
