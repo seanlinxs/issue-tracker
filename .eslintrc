@@ -4,5 +4,6 @@
     "no-console": ["off"],
     "no-param-reassign": ["error", { "props": false }],
     "no-restricted-syntax": ["off"],
+    "react/forbid-prop-types": ["off"],
   },
 }

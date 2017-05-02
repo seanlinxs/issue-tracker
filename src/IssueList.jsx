@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import 'whatwg-fetch';
 import IssueAdd from './IssueAdd.jsx';
 import IssueFilter from './IssueFilter.jsx';
@@ -14,6 +15,10 @@ const IssueRow = props => (
     <td>{props.issue.title}</td>
   </tr>
 );
+
+IssueRow.propTypes = {
+  issue: PropTypes.object.isRequired,
+};
 
 const IssueTable = props => (
   <table className="bordered-table">
@@ -33,6 +38,10 @@ const IssueTable = props => (
     </tbody>
   </table>
 );
+
+IssueTable.propTypes = {
+  issues: PropTypes.array.isRequired,
+};
 
 export default class IssueList extends React.Component {
   constructor() {
