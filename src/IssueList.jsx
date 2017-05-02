@@ -62,11 +62,11 @@ export default class IssueList extends React.Component {
         });
       } else {
         response.json().then(error => {
-          alert('Failed to fetch issues:' + error.message);
+          alert(`Failed to fetch issues: ${error.message}`);
         });
       }
     }).catch(err => {
-      alert('Error in fetching data from server:' + err);
+      alert(`Error in fetching data from server: ${err}`);
     });
   }
 
@@ -91,11 +91,11 @@ export default class IssueList extends React.Component {
         });
       } else {
         response.json().then(error => {
-          alert('Failed to add issue: ' + error.message);
+          alert(`Failed to add issue: ${error.message}`);
         });
       }
     }).catch(err => {
-      alert('Error in sending data to server: ' + err.message);
+      alert(`Error in sending data to server: ${err.message}`);
     });
   }
 
