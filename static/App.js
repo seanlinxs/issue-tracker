@@ -208,9 +208,21 @@ var IssueList = function (_React$Component3) {
     value: function loadData() {
       var _this4 = this;
 
-      setTimeout(function () {
-        _this4.setState({ issues: issues });
-      }, 500);
+      fetch('/api/issues').then(function (response) {
+        return response.json();
+      }).then(function (data) {
+        console.log('Total count of records:', data._metadata.total_count);
+        data.records.forEach(function (issue) {
+          issue.created = new Date(issue.created);
+
+          if (issue.completionDate) {
+            issue.completionDate = new Date(issue.completionDate);
+          }
+        });
+        _this4.setState({ issues: data.records });
+      }).catch(function (err) {
+        console.log(err);
+      });
     }
   }, {
     key: 'createIssue',
