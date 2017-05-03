@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import 'whatwg-fetch';
 import { Link } from 'react-router-dom';
+import QueryString from 'query-string';
 import IssueAdd from './IssueAdd.jsx';
 import IssueFilter from './IssueFilter.jsx';
 
@@ -47,7 +48,7 @@ IssueTable.propTypes = {
 export default class IssueList extends React.Component {
   constructor() {
     super();
-    this.state = { issues: [] };
+    this.state = { issues: [], updated: false };
 
     this.createIssue = this.createIssue.bind(this);
     this.setFilter = this.setFilter.bind(this);
@@ -58,19 +59,22 @@ export default class IssueList extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const oldQuery = prevProps.location.search;
-    const newQuery = this.props.location.search;
+    const oldQuery = QueryString.parse(prevProps.location.search);
+    const newQuery = QueryString.parse(this.props.location.search);
 
-    if (oldQuery.status === newQuery.status) {
+    if (oldQuery.status === newQuery.status
+      && oldQuery.effort_gte === newQuery.effort_gte
+      && oldQuery.effort_lte === newQuery.effort_lte) {
       return;
     }
 
     this.loadData();
   }
 
-  setFilter(search) {
+  setFilter(query) {
     const { location, history } = this.props;
-    history.push({ pathname: location.pathname, search });
+    this.setState({ updated: !this.state.updated });
+    history.push({ pathname: location.pathname, search: QueryString.stringify(query) });
   }
 
   createIssue(newIssue) {
@@ -131,7 +135,10 @@ export default class IssueList extends React.Component {
   render() {
     return (
       <div>
-        <IssueFilter setFilter={this.setFilter} />
+        <IssueFilter
+          setFilter={this.setFilter}
+          initFilter={QueryString.parse(this.props.location.search)}
+        />
         <hr />
         <IssueTable issues={this.state.issues} />
         <hr />
