@@ -1,26 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { withRouter } from 'react-router';
-import { HashRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
+import { Link, BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import IssueList from './IssueList.jsx';
 import IssueEdit from './IssueEdit.jsx';
 
 const contentNode = document.getElementById('contents');
 const NoMatch = () => <p>Page Not Found</p>;
-const RoutedApp = () => (
+
+const App = () => (
   <Router>
     <div>
-      <Redirect from="/" to="/issues" />
-      <Switch>
-        <Route exact path="/issues" component={withRouter(IssueList)} />
+      <div className="header">
+        <h1>Issue Tracker</h1>
+      </div>
+      <div className="contents">
+        <Redirect from="/" to="/issues" />
+        <Route exact path="/issues" component={IssueList} />
         <Route path="/issues/:id" component={IssueEdit} />
-        <Route path="*" component={NoMatch} />
-      </Switch>
+      </div>
+      <div className="footer">
+        Full source code available at <a href="https://github.com/seanlinxs/issue-tracker">https://github.com/seanlinxs/issue-tracker</a>
+      </div>
     </div>
   </Router>
 );
 
-ReactDOM.render(<RoutedApp />, contentNode);
+ReactDOM.render(<App />, contentNode);
 
 if (module.hot) {
   module.hot.accept();
