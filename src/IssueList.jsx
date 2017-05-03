@@ -50,6 +50,7 @@ export default class IssueList extends React.Component {
     this.state = { issues: [] };
 
     this.createIssue = this.createIssue.bind(this);
+    this.setFilter = this.setFilter.bind(this);
   }
 
   componentDidMount() {
@@ -67,30 +68,9 @@ export default class IssueList extends React.Component {
     this.loadData();
   }
 
-  loadData() {
-    fetch(`/api/issues${this.props.location.search}`)
-      .then((response) => {
-        if (response.ok) {
-          response.json().then((data) => {
-            console.log('Total count of records:', data._metadata.total_count);
-            data.records.forEach((issue) => {
-              issue.created = new Date(issue.created);
-
-              if (issue.completionDate) {
-                issue.completionDate = new Date(issue.completionDate);
-              }
-            });
-            this.setState({ issues: data.records });
-          });
-        } else {
-          response.json().then((error) => {
-            alert(`Failed to fetch issues: ${error.message}`);
-          });
-        }
-      })
-      .catch((err) => {
-        alert(`Error in fetching data from server: ${err}`);
-      });
+  setFilter(search) {
+    const { location, history } = this.props;
+    history.push({ pathname: location.pathname, search });
   }
 
   createIssue(newIssue) {
@@ -122,11 +102,37 @@ export default class IssueList extends React.Component {
     });
   }
 
+  loadData() {
+    fetch(`/api/issues${this.props.location.search}`)
+      .then((response) => {
+        if (response.ok) {
+          response.json().then((data) => {
+            console.log('Total count of records:', data._metadata.total_count);
+            data.records.forEach((issue) => {
+              issue.created = new Date(issue.created);
+
+              if (issue.completionDate) {
+                issue.completionDate = new Date(issue.completionDate);
+              }
+            });
+            this.setState({ issues: data.records });
+          });
+        } else {
+          response.json().then((error) => {
+            alert(`Failed to fetch issues: ${error.message}`);
+          });
+        }
+      })
+      .catch((err) => {
+        alert(`Error in fetching data from server: ${err}`);
+      });
+  }
+
   render() {
     return (
       <div>
         <h1>Issue Tracker</h1>
-        <IssueFilter />
+        <IssueFilter setFilter={this.setFilter} />
         <hr />
         <IssueTable issues={this.state.issues} />
         <hr />
@@ -138,4 +144,5 @@ export default class IssueList extends React.Component {
 
 IssueList.propTypes = {
   location: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
 };

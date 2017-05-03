@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { withRouter } from 'react-router';
 import { HashRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import IssueList from './IssueList.jsx';
 import IssueEdit from './IssueEdit.jsx';
@@ -11,7 +12,7 @@ const RoutedApp = () => (
     <div>
       <Redirect from="/" to="/issues" />
       <Switch>
-        <Route exact path="/issues" component={IssueList} />
+        <Route exact path="/issues" component={withRouter(IssueList)} />
         <Route path="/issues/:id" component={IssueEdit} />
         <Route path="*" component={NoMatch} />
       </Switch>
