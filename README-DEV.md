@@ -22,6 +22,8 @@ React treats the component as a simple state machine. Whenever the state changes
 
 Split the application into components and subcomponents. Decide on the granularity just as you would for splitting functions and objects. The component should be self-contained with minimal and logical interfaces to the parent. If it is doing too many things, just like for functions, it should probably be split into multiple components, so that it follows the Single Responsibility principle (that is, every component should be responsible for one and only one thing). If you are passing in too many `props` to a component, it is an indication that either the component needs to be split, or it need not exist; the parent itself could do the job.
 
+In JSX, if the same property is specified more than once, the last specification is the one that takes effect.
+
 ### Express
 
 Multiple routes can be set up to match different URLs and patterns. The router does not try to find a best match; instead, it tries to match all routes in the order in which they are installed. The ***first*** match is used.
