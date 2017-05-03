@@ -1,4 +1,5 @@
 import 'babel-polyfill';
+import path from 'path';
 import SourceMapSupport from 'source-map-support';
 import express from 'express';
 import bodyParser from 'body-parser';
