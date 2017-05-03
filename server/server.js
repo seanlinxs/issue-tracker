@@ -3,7 +3,7 @@ import path from 'path';
 import SourceMapSupport from 'source-map-support';
 import express from 'express';
 import bodyParser from 'body-parser';
-import { MongoClient } from 'mongodb';
+import { ObjectId, MongoClient } from 'mongodb';
 import Issue from './issue.js';
 
 SourceMapSupport.install();
@@ -13,6 +13,30 @@ let db;
 
 app.use(express.static('static'));
 app.use(bodyParser.json());
+
+app.get('/api/issues/:id', (req, res) => {
+  let issueId;
+
+  try {
+    issueId = new ObjectId(req.params.id);
+  } catch (error) {
+    res.status(422).json({ message: `Invalid issue ID format: ${error}` });
+    return;
+  }
+
+  db.collection('issues').find({ _id: issueId }).limit(1).next()
+  .then((issue) => {
+    if (!issue) {
+      res.status(404).json({ message: `No such issue: ${issueId}` });
+    } else {
+      res.json(issue);
+    }
+  })
+  .catch((error) => {
+    console.log(error);
+    res.status(500).json({ message: `Internal Server Error: ${error}` });
+  });
+});
 
 app.get('/api/issues', (req, res) => {
   const filter = {};
