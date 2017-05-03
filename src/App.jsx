@@ -14,9 +14,11 @@ const App = () => (
         <h1>Issue Tracker</h1>
       </div>
       <div className="contents">
-        <Redirect from="/" to="/issues" />
-        <Route exact path="/issues" component={IssueList} />
-        <Route path="/issues/:id" component={IssueEdit} />
+        <Switch>
+          <Route exact path="/issues" component={IssueList} />
+          <Route path="/issues/:id" component={IssueEdit} />
+          <Route component={NoMatch} />
+        </Switch>
       </div>
       <div className="footer">
         Full source code available at <a href="https://github.com/seanlinxs/issue-tracker">https://github.com/seanlinxs/issue-tracker</a>

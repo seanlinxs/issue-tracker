@@ -58,6 +58,8 @@ app.post('/api/issues', (req, res) => {
     });
 });
 
+app.get('*', (req, res) => res.sendFile(path.resolve('static/index.html')));
+
 MongoClient.connect('mongodb://localhost/issue-tracker')
   .then((connection) => {
     db = connection;
