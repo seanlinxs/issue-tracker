@@ -3,7 +3,7 @@ const webpack = require('webpack');
 
 module.exports = {
   entry: {
-    app: './client/Client.jsx',
+    app: ['./client/Client.jsx'],
     vendor: ['react', 'react-dom', 'react-router-bootstrap', 'react-router-dom', 'whatwg-fetch'],
   },
   output: {
