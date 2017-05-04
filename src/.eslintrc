@@ -3,7 +3,6 @@
     "browser": true,
   },
   "rules": {
-    "no-alert": ["off"],
     "jsx-a11y/href-no-hash": ["off"],
   },
 }
