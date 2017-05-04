@@ -58,7 +58,7 @@ app.get('/api/issues', (req, res) => {
   }
 
   if (req.query._summary === undefined) {
-    let limit = req.query.limit ? parseInt(req.query._limit, 10) : 20;
+    let limit = req.query._limit ? parseInt(req.query._limit, 10) : 20;
 
     if (limit > 50) {
       limit = 50;
