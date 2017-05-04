@@ -1,10 +1,10 @@
 import 'babel-polyfill';
+import path from 'path';
 import SourceMapSupport from 'source-map-support';
 import express from 'express';
 import bodyParser from 'body-parser';
 import { ObjectId, MongoClient } from 'mongodb';
 import Issue from './issue.js';
-import renderedPageRouter from './renderedPageRouter.jsx';
 
 SourceMapSupport.install();
 
@@ -148,7 +148,7 @@ app.delete('/api/issues/:id', (req, res) => {
   });
 });
 
-app.use('/', renderedPageRouter);
+app.get('*', (req, res) => res.sendFile(path.resolve('static/index.html')));
 
 MongoClient.connect('mongodb://localhost/issue-tracker')
   .then((connection) => {
