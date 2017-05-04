@@ -4,7 +4,6 @@ import 'whatwg-fetch';
 import { Button, Glyphicon, Table, Panel } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import QueryString from 'query-string';
-import IssueAdd from './IssueAdd.jsx';
 import IssueFilter from './IssueFilter.jsx';
 import Toast from './Toast.jsx';
 
@@ -194,7 +193,6 @@ export default class IssueList extends React.Component {
           />
         </Panel>
         <IssueTable issues={this.state.issues} deleteIssue={this.deleteIssue} />
-        <IssueAdd createIssue={this.createIssue} />
         <Toast
           showing={this.state.toastVisible}
           message={this.state.toastMessage}

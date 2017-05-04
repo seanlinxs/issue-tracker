@@ -5,6 +5,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import IssueList from './IssueList.jsx';
 import IssueEdit from './IssueEdit.jsx';
+import IssueAddNavItem from './IssueAddNavItem.jsx';
 
 const contentNode = document.getElementById('contents');
 
@@ -24,7 +25,7 @@ const Header = () => (
       </LinkContainer>
     </Nav>
     <Nav pullRight>
-      <NavItem><Glyphicon glyph="plus" /> Create Issue</NavItem>
+      <IssueAddNavItem />
       <NavDropdown
         id="user-dropdown"
         title={<Glyphicon glyph="option-horizontal" />}
