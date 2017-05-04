@@ -8,6 +8,7 @@ import {
   Panel,
   Form,
   Col,
+  Alert,
 } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import PropTypes from 'prop-types';
@@ -28,10 +29,13 @@ export default class IssueEdit extends React.Component {
         created: '',
       },
       invalidFields: {},
+      showingValidation: false,
     };
     this.onChange = this.onChange.bind(this);
     this.onValidityChange = this.onValidityChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.dismissValidation = this.dismissValidation.bind(this);
+    this.showValidation = this.showValidation.bind(this);
   }
 
   componentDidMount() {
@@ -65,6 +69,7 @@ export default class IssueEdit extends React.Component {
 
   onSubmit(e) {
     e.preventDefault();
+    this.showValidation();
 
     if (Object.keys(this.state.invalidFields).length !== 0) {
       return;
@@ -119,10 +124,26 @@ export default class IssueEdit extends React.Component {
       });
   }
 
+  showValidation() {
+    this.setState({ showingValidation: true });
+  }
+
+  dismissValidation() {
+    this.setState({ showingValidation: false });
+  }
+
   render() {
     const issue = this.state.issue;
-    const validationMessage = Object.keys(this.state.invalidFields).length === 0 ?
-      null : (<div className="error">Please correct invalid fields.</div>);
+    let validationMessage = null;
+
+    if (Object.keys(this.state.invalidFields).length !== 0
+      && this.state.showingValidation) {
+      validationMessage = (
+        <Alert bsStyle="danger" onDismiss={this.dismissValidation}>
+          Please correct invalid fields before submitting.
+        </Alert>
+      );
+    }
 
     return (
       <Panel header="Edit Issue">
@@ -177,7 +198,9 @@ export default class IssueEdit extends React.Component {
               />
             </Col>
           </FormGroup>
-          <FormGroup validationState={this.state.invalidFields.completionDate ? 'error' : null}>
+          <FormGroup
+            validationState={this.state.invalidFields.completionDate ? 'error' : null}
+          >
             <Col componentClass={ControlLabel} sm={3}>Completion Date</Col>
             <Col sm={9}>
               <FormControl
@@ -206,8 +229,10 @@ export default class IssueEdit extends React.Component {
               </ButtonToolbar>
             </Col>
           </FormGroup>
+          <FormGroup>
+            <Col smOffset={3} sm={9}>{validationMessage}</Col>
+          </FormGroup>
         </Form>
-        {validationMessage}
       </Panel>
     );
   }
