@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import NumInput from './NumInput.jsx';
+import DateInput from './DateInput.jsx';
 
 export default class IssueEdit extends React.Component {
   constructor() {
@@ -13,11 +14,13 @@ export default class IssueEdit extends React.Component {
         status: '',
         owner: '',
         effort: null,
-        completionDate: '',
+        completionDate: null,
         created: '',
       },
+      invalidFields: {},
     };
     this.onChange = this.onChange.bind(this);
+    this.onValidityChange = this.onValidityChange.bind(this);
   }
 
   componentDidMount() {
@@ -37,6 +40,18 @@ export default class IssueEdit extends React.Component {
     this.setState({ issue });
   }
 
+  onValidityChange(e, valid) {
+    const invalidFields = Object.assign({}, this.state.invalidFields);
+
+    if (!valid) {
+      invalidFields[e.target.name] = true;
+    } else {
+      delete invalidFields[e.target.name];
+    }
+
+    this.setState({ invalidFields });
+  }
+
   loadData() {
     fetch(`/api/issues/${this.props.match.params.id}`)
       .then((response) => {
@@ -44,7 +59,8 @@ export default class IssueEdit extends React.Component {
           response.json()
             .then((issue) => {
               issue.created = new Date(issue.created).toDateString();
-              issue.completionDate = issue.completionDate != null ? new Date(issue.completionDate).toDateString() : '';
+              issue.completionDate = issue.completionDate != null ?
+                new Date(issue.completionDate) : null;
               this.setState({ issue });
             });
         } else {
@@ -61,6 +77,9 @@ export default class IssueEdit extends React.Component {
 
   render() {
     const issue = this.state.issue;
+    const validationMessage = Object.keys(this.state.invalidFields).length === 0 ?
+      null : (<div className="error">Please correct invalid fields.</div>);
+
     return (
       <div>
         <form>
@@ -94,10 +113,11 @@ export default class IssueEdit extends React.Component {
           />
           <br />
           Completion Date:
-          <input
+          <DateInput
             name="completionDate"
             value={issue.completionDate}
             onChange={this.onChange}
+            onValidityChange={this.onValidityChange}
           />
           <br />
           Title:
@@ -108,6 +128,7 @@ export default class IssueEdit extends React.Component {
             onChange={this.onChange}
           />
           <br />
+          {validationMessage}
           <button type="submit">Submit</button>
           <Link to="/issues">Back to issue list</Link>
         </form>
