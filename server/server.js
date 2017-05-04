@@ -25,17 +25,17 @@ app.get('/api/issues/:id', (req, res) => {
   }
 
   db.collection('issues').find({ _id: issueId }).limit(1).next()
-  .then((issue) => {
-    if (!issue) {
-      res.status(404).json({ message: `No such issue: ${issueId}` });
-    } else {
-      res.json(issue);
-    }
-  })
-  .catch((error) => {
-    console.log(error);
-    res.status(500).json({ message: `Internal Server Error: ${error}` });
-  });
+    .then((issue) => {
+      if (!issue) {
+        res.status(404).json({ message: `No such issue: ${issueId}` });
+      } else {
+        res.json(issue);
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json({ message: `Internal Server Error: ${error}` });
+    });
 });
 
 app.get('/api/issues', (req, res) => {
@@ -57,18 +57,58 @@ app.get('/api/issues', (req, res) => {
     filter.effort.$gte = parseInt(req.query.effort_gte, 10);
   }
 
-  db.collection('issues').find(filter).toArray().then((issues) => {
-    const metadata = { total_count: issues.length };
+  if (req.query._summary === undefined) {
+    let limit = req.query.limit ? parseInt(req.query._limit, 10) : 20;
 
-    res.json({
-      _metadata: metadata,
-      records: issues,
-    });
-  })
-    .catch((error) => {
-      console.log(error);
-      res.status(500).json({ message: `Internal Server Error: ${error}` });
-    });
+    if (limit > 50) {
+      limit = 50;
+    }
+
+    db.collection('issues').find(filter).limit(limit).toArray()
+      .then((issues) => {
+        const metadata = { total_count: issues.length };
+
+        res.json({
+          _metadata: metadata,
+          records: issues,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(500).json({ message: `Internal Server Error: ${error}` });
+      });
+  } else {
+    db.collection('issues').aggregate([
+      {
+        $match: filter,
+      },
+      {
+        $group: {
+          _id: {
+            owner: '$owner',
+            status: '$status',
+          },
+          count: {
+            $sum: 1,
+          },
+        },
+      },
+    ]).toArray()
+      .then((results) => {
+        const stats = {};
+        results.forEach((result) => {
+          if (!stats[result._id.owner]) {
+            stats[result._id.owner] = {};
+          }
+          stats[result._id.owner][result._id.status] = result.count;
+        });
+        res.json(stats);
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(500).json({ message: `Internal Server Error: ${error}` });
+      });
+  }
 });
 
 app.post('/api/issues', (req, res) => {
@@ -116,12 +156,12 @@ app.put('/api/issues/:id', (req, res) => {
   }
 
   db.collection('issues').update({ _id: issueId }, Issue.convertIssue(issue))
-  .then(() => db.collection('issues').find({ _id: issueId }).limit(1).next())
-  .then(savedIssue => res.json(savedIssue))
-  .catch((error) => {
-    console.log(error);
-    res.status(500).json({ message: `Internal Server Error: ${error}` });
-  });
+    .then(() => db.collection('issues').find({ _id: issueId }).limit(1).next())
+    .then(savedIssue => res.json(savedIssue))
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json({ message: `Internal Server Error: ${error}` });
+    });
 });
 
 app.delete('/api/issues/:id', (req, res) => {
@@ -135,17 +175,17 @@ app.delete('/api/issues/:id', (req, res) => {
   }
 
   db.collection('issues').deleteOne({ _id: issueId })
-  .then((deleteResult) => {
-    if (deleteResult.result.n === 1) {
-      res.json({ status: 'OK' });
-    } else {
-      res.json({ status: 'Warning: object not found' });
-    }
-  })
-  .catch((error) => {
-    console.log(error);
-    res.status(500).json({ message: `Internal Server Error: ${error}` });
-  });
+    .then((deleteResult) => {
+      if (deleteResult.result.n === 1) {
+        res.json({ status: 'OK' });
+      } else {
+        res.json({ status: 'Warning: object not found' });
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json({ message: `Internal Server Error: ${error}` });
+    });
 });
 
 app.get('*', (req, res) => res.sendFile(path.resolve('static/index.html')));
