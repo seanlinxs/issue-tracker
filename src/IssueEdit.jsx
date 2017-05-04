@@ -21,6 +21,7 @@ export default class IssueEdit extends React.Component {
     };
     this.onChange = this.onChange.bind(this);
     this.onValidityChange = this.onValidityChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -52,13 +53,46 @@ export default class IssueEdit extends React.Component {
     this.setState({ invalidFields });
   }
 
+  onSubmit(e) {
+    e.preventDefault();
+
+    if (Object.keys(this.state.invalidFields).length !== 0) {
+      return;
+    }
+
+    fetch(`/api/issues/${this.props.match.params.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(this.state.issue),
+    })
+      .then((response) => {
+        if (response.ok) {
+          response.json()
+            .then((updatedIssue) => {
+              updatedIssue.created = new Date(updatedIssue.created);
+
+              if (updatedIssue.completionDate) {
+                updatedIssue.completionDate = new Date(updatedIssue.completionDate);
+              }
+
+              this.setState({ issue: updatedIssue });
+              alert('Update issue successfully.');
+            });
+        } else {
+          response.json()
+            .then(error => alert(`Failed to update issue: ${error.message}`));
+        }
+      })
+      .catch(err => alert(`Error in sending data to server: ${err.message}`));
+  }
+
   loadData() {
     fetch(`/api/issues/${this.props.match.params.id}`)
       .then((response) => {
         if (response.ok) {
           response.json()
             .then((issue) => {
-              issue.created = new Date(issue.created).toDateString();
+              issue.created = new Date(issue.created);
               issue.completionDate = issue.completionDate != null ?
                 new Date(issue.completionDate) : null;
               this.setState({ issue });
@@ -82,10 +116,10 @@ export default class IssueEdit extends React.Component {
 
     return (
       <div>
-        <form>
+        <form onSubmit={this.onSubmit}>
           ID: {issue._id}
           <br />
-          Created: {issue.created}
+          Created: {issue.created ? issue.created.toDateString() : ''}
           <br />
           Status: <select name="status" value={issue.status} onChange={this.onChange}>
             <option value="">(Any)</option>
