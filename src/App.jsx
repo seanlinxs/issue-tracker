@@ -1,27 +1,57 @@
 import React from 'react';
+import { Navbar, Nav, NavItem, NavDropdown, MenuItem, Glyphicon } from 'react-bootstrap';
 import ReactDOM from 'react-dom';
+import { LinkContainer } from 'react-router-bootstrap';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import IssueList from './IssueList.jsx';
 import IssueEdit from './IssueEdit.jsx';
 
 const contentNode = document.getElementById('contents');
+
 const NoMatch = () => <p>Page Not Found</p>;
+
+const Header = () => (
+  <Navbar fluid>
+    <Navbar.Header>
+      <Navbar.Brand>Issue Tracker</Navbar.Brand>
+    </Navbar.Header>
+    <Nav>
+      <LinkContainer to="/issues">
+        <NavItem>Issues</NavItem>
+      </LinkContainer>
+      <LinkContainer to="/reports">
+        <NavItem>Reports</NavItem>
+      </LinkContainer>
+    </Nav>
+    <Nav pullRight>
+      <NavItem><Glyphicon glyph="plus" /> Create Issue</NavItem>
+      <NavDropdown
+        id="user-dropdown"
+        title={<Glyphicon glyph="option-horizontal" />}
+        noCaret
+      >
+        <MenuItem>Logout</MenuItem>
+      </NavDropdown>
+    </Nav>
+  </Navbar>
+);
 
 const App = () => (
   <Router>
     <div>
-      <div className="header">
-        <h1>Issue Tracker</h1>
-      </div>
-      <div className="contents">
+      <Header />
+      <div className="container-fluid">
         <Switch>
           <Route exact path="/issues" component={IssueList} />
           <Route path="/issues/:id" component={IssueEdit} />
           <Route component={NoMatch} />
         </Switch>
-      </div>
-      <div className="footer">
-        Full source code available at <a href="https://github.com/seanlinxs/issue-tracker">https://github.com/seanlinxs/issue-tracker</a>
+        <hr />
+        <h5>
+          <small>
+            Full source code available at <a href="https://github.com/seanlinxs/issue-tracker">https://github.com/seanlinxs/issue-tracker</a>
+          </small>
+        </h5>
       </div>
     </div>
   </Router>
