@@ -1,13 +1,17 @@
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
   target: 'node',
-  entry: './server/server.js',
+  entry: ['./server/server.js', './node_modules/webpack/hot//poll?1000'],
   output: {
     path: path.resolve('dist'),
     filename: 'server.bundle.js',
     libraryTarget: 'commonjs',
   },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+  ],
   resolve: {
     extensions: ['.js', '.jsx'],
   },
