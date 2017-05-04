@@ -68,7 +68,7 @@ IssueTable.propTypes = {
 export default class IssueList extends React.Component {
   constructor() {
     super();
-    this.state = { issues: [], updated: false };
+    this.state = { issues: [] };
 
     this.createIssue = this.createIssue.bind(this);
     this.setFilter = this.setFilter.bind(this);
@@ -94,7 +94,6 @@ export default class IssueList extends React.Component {
 
   setFilter(query) {
     const { location, history } = this.props;
-    this.setState({ updated: !this.state.updated });
     history.push({ pathname: location.pathname, search: QueryString.stringify(query) });
   }
 
