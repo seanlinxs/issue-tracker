@@ -4,12 +4,14 @@
   "description": "Issue Tracker focus on simplicity",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon -w dist dist/server.js",
+    "start": "nodemon -w dist dist/server.bundle.js",
+    "compile-server": "webpack --config webpack.server-config.js",
+    "watch-server": "webpack --config webpack.server-config.js --watch",
     "start-hook": "nodemon -e js,jsx -w server,src server/start_hook.js",
     "compile": "webpack",
     "watch": "webpack-dev-server --hot --inline",
     "dev-all-hook": "npm run watch & npm run start-hook",
-    "lint": "eslint --ext js,jsx src server webpack.config.js",
+    "lint": "eslint --ext js,jsx client src server webpack.config.js, webpack.server-config.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -36,6 +38,7 @@
     "bootstrap": "^3.3.7",
     "express": "^4.15.2",
     "mongodb": "^2.2.26",
+    "object-assign": "^4.1.1",
     "prop-types": "^15.5.8",
     "query-string": "^4.3.4",
     "react": "^15.5.4",
