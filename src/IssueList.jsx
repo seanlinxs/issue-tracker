@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import 'whatwg-fetch';
-import { Button, Glyphicon } from 'react-bootstrap';
+import { Button, Glyphicon, Table, Panel } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import QueryString from 'query-string';
 import IssueAdd from './IssueAdd.jsx';
@@ -45,7 +45,7 @@ const IssueTable = (props) => {
   ));
 
   return (
-    <table className="bordered-table">
+    <Table bordered condensed hover responsive>
       <thead>
         <tr>
           <th>Id</th>
@@ -61,7 +61,7 @@ const IssueTable = (props) => {
       <tbody>
         {issues}
       </tbody>
-    </table>
+    </Table>
   );
 };
 
@@ -171,13 +171,13 @@ export default class IssueList extends React.Component {
   render() {
     return (
       <div>
-        <IssueFilter
-          setFilter={this.setFilter}
-          initFilter={QueryString.parse(this.props.location.search)}
-        />
-        <hr />
+        <Panel collapsible header="Filter">
+          <IssueFilter
+            setFilter={this.setFilter}
+            initFilter={QueryString.parse(this.props.location.search)}
+          />
+        </Panel>
         <IssueTable issues={this.state.issues} deleteIssue={this.deleteIssue} />
-        <hr />
         <IssueAdd createIssue={this.createIssue} />
       </div>
     );
