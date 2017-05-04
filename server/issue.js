@@ -10,7 +10,7 @@ const validIssueStatus = {
 const issueFieldType = {
   status: 'required',
   owner: 'required',
-  effort: 'required',
+  effort: 'optional',
   created: 'required',
   completionDate: 'optional',
   title: 'required',
