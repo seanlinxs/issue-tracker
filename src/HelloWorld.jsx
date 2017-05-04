@@ -14,7 +14,7 @@ export default class HelloWorld extends React.Component {
 
   render() {
     return (
-      <h1>Hey {this.state.addressee}!</h1>
+      <h1>Hello {this.state.addressee}!</h1>
     );
   }
 }
