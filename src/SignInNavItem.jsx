@@ -86,7 +86,7 @@ export default class SignInNavItem extends React.Component {
     if (this.props.user.signedIn) {
       return (
         <NavDropdown title={this.props.user.name} id="user-dropdown">
-          <MenuItem onClick={this.signout}>Sign out</MenuItem>
+          <MenuItem onClick={this.signOut}>Sign out</MenuItem>
         </NavDropdown>
       );
     }
