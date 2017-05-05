@@ -59,6 +59,7 @@ export default class SignInNavItem extends React.Component {
     fetch('/signout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
     })
       .then((response) => {
         if (response.ok) {

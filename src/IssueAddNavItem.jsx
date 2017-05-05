@@ -48,6 +48,7 @@ class IssueAddNavItem extends React.Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(newIssue),
+      credentials: 'include',
     }).then((response) => {
       if (response.ok) {
         response.json().then((updatedIssue) => {
