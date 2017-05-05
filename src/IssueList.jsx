@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import 'whatwg-fetch';
-import { Button, Glyphicon, Table, Panel } from 'react-bootstrap';
+import { Button, Glyphicon, Table, Panel, Pagination } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import QueryString from 'query-string';
 import IssueFilter from './IssueFilter.jsx';
 import Toast from './Toast.jsx';
+
+const PAGE_SIZE = 10;
 
 const IssueRow = (props) => {
   function onDeleteClick() {
@@ -74,6 +76,7 @@ export default class IssueList extends React.Component {
   constructor() {
     super();
     this.state = {
+      totalCount: 0,
       issues: [],
       toastVisible: false,
       toastMessage: '',
@@ -85,6 +88,7 @@ export default class IssueList extends React.Component {
     this.deleteIssue = this.deleteIssue.bind(this);
     this.showError = this.showError.bind(this);
     this.dismissToast = this.dismissToast.bind(this);
+    this.selectPage = this.selectPage.bind(this);
   }
 
   componentDidMount() {
@@ -97,7 +101,8 @@ export default class IssueList extends React.Component {
 
     if (oldQuery.status === newQuery.status
       && oldQuery.effort_gte === newQuery.effort_gte
-      && oldQuery.effort_lte === newQuery.effort_lte) {
+      && oldQuery.effort_lte === newQuery.effort_lte
+      && oldQuery._page === newQuery._page) {
       return;
     }
 
@@ -150,11 +155,22 @@ export default class IssueList extends React.Component {
   }
 
   loadData() {
-    fetch(`/api/issues${this.props.location.search}`)
+    const query = Object.assign({}, QueryString.parse(this.props.location.search));
+    const pageStr = query._page;
+
+    if (pageStr) {
+      delete query._page;
+      query._offset = (parseInt(pageStr, 10) - 1) * PAGE_SIZE;
+    }
+
+    query._limit = PAGE_SIZE;
+    const search = QueryString.stringify(query);
+
+    fetch(`/api/issues?${search}`)
       .then((response) => {
         if (response.ok) {
           response.json().then((data) => {
-            console.log('Total count of records:', data._metadata.total_count);
+            console.log('Total count of records:', data._metadata.totalCount);
             data.records.forEach((issue) => {
               issue.created = new Date(issue.created);
 
@@ -162,7 +178,10 @@ export default class IssueList extends React.Component {
                 issue.completionDate = new Date(issue.completionDate);
               }
             });
-            this.setState({ issues: data.records });
+            this.setState({
+              totalCount: data._metadata.totalCount,
+              issues: data.records,
+            });
           });
         } else {
           response.json().then((error) => {
@@ -183,6 +202,17 @@ export default class IssueList extends React.Component {
     this.setState({ toastVisible: false });
   }
 
+  selectPage(eventKey) {
+    const query = Object.assign(
+      QueryString.parse(this.props.location.search),
+      { _page: eventKey },
+    );
+    this.props.history.push({
+      pathname: this.props.location.pathname,
+      search: QueryString.stringify(query),
+    });
+  }
+
   render() {
     return (
       <div>
@@ -192,6 +222,15 @@ export default class IssueList extends React.Component {
             initFilter={QueryString.parse(this.props.location.search)}
           />
         </Panel>
+        <Pagination
+          items={Math.ceil(this.state.totalCount / PAGE_SIZE)}
+          activePage={parseInt(QueryString.parse(this.props.location.search)._page || '1', 10)}
+          onSelect={this.selectPage}
+          maxButtons={7}
+          next
+          prev
+          boundaryLinks
+        />
         <IssueTable issues={this.state.issues} deleteIssue={this.deleteIssue} />
         <Toast
           showing={this.state.toastVisible}
