@@ -6,7 +6,6 @@ import IssueList from './IssueList.jsx';
 import IssueEdit from './IssueEdit.jsx';
 import IssueReport from './IssueReport.jsx';
 import Header from './Header.jsx';
-import withUser from './withUser.jsx';
 
 const contentNode = document.getElementById('contents');
 
@@ -55,10 +54,6 @@ export default class App extends React.Component {
   }
 
   render() {
-    const IssueListWithUser = withUser(this.state.user, IssueList);
-    const IssueEditWithUser = withUser(this.state.user, IssueEdit);
-    const IssueReportWithUser = withUser(this.state.user, IssueReport);
-
     return (
       <Router>
         <div>
@@ -69,9 +64,19 @@ export default class App extends React.Component {
           />
           <div className="container-fluid">
             <Switch>
-              <Route exact path="/issues" component={IssueListWithUser} />
-              <Route path="/issues/:id" component={IssueEditWithUser} />
-              <Route path="/reports" component={IssueReportWithUser} />
+              <Route
+                exact
+                path="/issues"
+                render={props => (<IssueList {...props} user={this.state.user} />)}
+              />
+              <Route
+                path="/issues/:id"
+                render={props => (<IssueEdit {...props} user={this.state.user} />)}
+              />
+              <Route
+                path="/reports"
+                component={props => (<IssueReport {...props} user={this.state.user} />)}
+              />
               <Route component={NoMatch} />
             </Switch>
             <hr />

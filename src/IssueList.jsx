@@ -41,7 +41,7 @@ IssueRow.propTypes = {
 
 IssueRow.defaultProps = {
   deleteIssue: null,
-}
+};
 
 const IssueTable = (props) => {
   const issues = props.issues.map(issue => (
@@ -80,7 +80,7 @@ IssueTable.propTypes = {
 
 IssueTable.defaultProps = {
   deleteIssue: null,
-}
+};
 
 class IssueList extends React.Component {
   constructor() {
