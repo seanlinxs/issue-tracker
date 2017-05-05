@@ -5,7 +5,7 @@ import { Button, Glyphicon, Table, Panel, Pagination } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import QueryString from 'query-string';
 import IssueFilter from './IssueFilter.jsx';
-import Toast from './Toast.jsx';
+import withToast from './withToast.jsx';
 
 const PAGE_SIZE = 10;
 
@@ -72,22 +72,17 @@ IssueTable.propTypes = {
   deleteIssue: PropTypes.func.isRequired,
 };
 
-export default class IssueList extends React.Component {
+class IssueList extends React.Component {
   constructor() {
     super();
     this.state = {
       totalCount: 0,
       issues: [],
-      toastVisible: false,
-      toastMessage: '',
-      toastType: 'success',
     };
 
     this.createIssue = this.createIssue.bind(this);
     this.setFilter = this.setFilter.bind(this);
     this.deleteIssue = this.deleteIssue.bind(this);
-    this.showError = this.showError.bind(this);
-    this.dismissToast = this.dismissToast.bind(this);
     this.selectPage = this.selectPage.bind(this);
   }
 
@@ -135,11 +130,11 @@ export default class IssueList extends React.Component {
         });
       } else {
         response.json().then((error) => {
-          this.showError(`Failed to add issue: ${error.message}`);
+          this.props.showError(`Failed to add issue: ${error.message}`);
         });
       }
     }).catch((err) => {
-      this.showError(`Error in sending data to server: ${err.message}`);
+      this.props.showError(`Error in sending data to server: ${err.message}`);
     });
   }
 
@@ -147,7 +142,7 @@ export default class IssueList extends React.Component {
     fetch(`/api/issues/${id}`, { method: 'DELETE' })
       .then((response) => {
         if (!response.ok) {
-          this.showError('Failed to delete issue');
+          this.props.showError('Failed to delete issue');
         } else {
           this.loadData();
         }
@@ -185,21 +180,13 @@ export default class IssueList extends React.Component {
           });
         } else {
           response.json().then((error) => {
-            this.showError(`Failed to fetch issues: ${error.message}`);
+            this.props.showError(`Failed to fetch issues: ${error.message}`);
           });
         }
       })
       .catch((err) => {
-        this.showError(`Error in fetching data from server: ${err}`);
+        this.props.showError(`Error in fetching data from server: ${err}`);
       });
-  }
-
-  showError(message) {
-    this.setState({ toastVisible: true, toastMessage: message, toastType: 'danger' });
-  }
-
-  dismissToast() {
-    this.setState({ toastVisible: false });
   }
 
   selectPage(eventKey) {
@@ -232,12 +219,6 @@ export default class IssueList extends React.Component {
           boundaryLinks
         />
         <IssueTable issues={this.state.issues} deleteIssue={this.deleteIssue} />
-        <Toast
-          showing={this.state.toastVisible}
-          message={this.state.toastMessage}
-          onDismiss={this.dismissToast}
-          bsStyle={this.state.toastType}
-        />
       </div>
     );
   }
@@ -246,4 +227,9 @@ export default class IssueList extends React.Component {
 IssueList.propTypes = {
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
+  showError: PropTypes.func.isRequired,
 };
+
+const IssueListWithToast = withToast(IssueList);
+
+export default IssueListWithToast;
