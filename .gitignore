@@ -45,3 +45,6 @@ vendor.bundle.js
 
 # dist
 dist
+
+# deployment configuration
+config.js

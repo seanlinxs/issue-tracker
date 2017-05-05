@@ -10,27 +10,52 @@ const contentNode = document.getElementById('contents');
 
 const NoMatch = () => <p>Page Not Found</p>;
 
-const App = () => (
-  <Router>
-    <div>
-      <Header />
-      <div className="container-fluid">
-        <Switch>
-          <Route exact path="/issues" component={IssueList} />
-          <Route path="/issues/:id" component={IssueEdit} />
-          <Route path="/reports" component={IssueReport} />
-          <Route component={NoMatch} />
-        </Switch>
-        <hr />
-        <h5>
-          <small>
-            Full source code available at <a href="https://github.com/seanlinxs/issue-tracker">https://github.com/seanlinxs/issue-tracker</a>
-          </small>
-        </h5>
-      </div>
-    </div>
-  </Router>
-);
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: { signedIn: false, name: '' },
+    };
+    this.onSignin = this.onSignin.bind(this);
+    this.onSignout = this.onSignout.bind(this);
+  }
+
+  onSignin(name) {
+    this.setState({ user: { signedIn: true, name } });
+  }
+
+  onSignout() {
+    this.setState({ user: { signedIn: false, name: '' } });
+  }
+
+  render() {
+    return (
+      <Router>
+        <div>
+          <Header
+            user={this.state.user}
+            onSignin={this.onSignin}
+            onSignout={this.onSignout}
+          />
+          <div className="container-fluid">
+            <Switch>
+              <Route exact path="/issues" component={IssueList} />
+              <Route path="/issues/:id" component={IssueEdit} />
+              <Route path="/reports" component={IssueReport} />
+              <Route component={NoMatch} />
+            </Switch>
+            <hr />
+            <h5>
+              <small>
+                Full source code available at <a href="https://github.com/seanlinxs/issue-tracker">https://github.com/seanlinxs/issue-tracker</a>
+              </small>
+            </h5>
+          </div>
+        </div>
+      </Router>
+    );
+  }
+}
 
 ReactDOM.render(<App />, contentNode);
 

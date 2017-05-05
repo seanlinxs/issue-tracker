@@ -4,15 +4,13 @@ import {
   Navbar,
   Nav,
   NavItem,
-  NavDropdown,
-  MenuItem,
-  Glyphicon,
   Col,
 } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { withRouter } from 'react-router';
 import Select from 'react-select';
 import IssueAddNavItem from './IssueAddNavItem.jsx';
+import SignInNavItem from './SignInNavItem.jsx';
 import withToast from './withToast.jsx';
 
 const Header = (props) => {
@@ -82,13 +80,13 @@ const Header = (props) => {
       <Col sm={3}>
         <Nav pullRight>
           <IssueAddNavItem showError={props.showError} />
-          <NavDropdown
-            id="user-dropdown"
-            title={<Glyphicon glyph="option-horizontal" />}
-            noCaret
-          >
-            <MenuItem>Logout</MenuItem>
-          </NavDropdown>
+          <SignInNavItem
+            user={props.user}
+            onSignin={props.onSignin}
+            onSignout={props.onSignout}
+            showError={props.showError}
+            showSuccess={props.showSuccess}
+          />
         </Nav>
       </Col>
     </Navbar>
@@ -96,8 +94,16 @@ const Header = (props) => {
 };
 
 Header.propTypes = {
+  user: PropTypes.object,
+  onSignin: PropTypes.func.isRequired,
+  onSignout: PropTypes.func.isRequired,
+  showSuccess: PropTypes.func.isRequired,
   showError: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
+};
+
+Header.defaultProps = {
+  user: { signedIn: false, name: '' },
 };
 
 export default withRouter(withToast(Header));
