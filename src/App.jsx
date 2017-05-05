@@ -5,6 +5,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import IssueList from './IssueList.jsx';
 import IssueEdit from './IssueEdit.jsx';
+import IssueReport from './IssueReport.jsx';
 import IssueAddNavItem from './IssueAddNavItem.jsx';
 
 const contentNode = document.getElementById('contents');
@@ -45,6 +46,7 @@ const App = () => (
         <Switch>
           <Route exact path="/issues" component={IssueList} />
           <Route path="/issues/:id" component={IssueEdit} />
+          <Route path="/reports" component={IssueReport} />
           <Route component={NoMatch} />
         </Switch>
         <hr />
