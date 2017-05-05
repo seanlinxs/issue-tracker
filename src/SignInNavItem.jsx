@@ -39,6 +39,7 @@ export default class SignInNavItem extends React.Component {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ id_token: googleUser.getAuthResponse().id_token }),
+          credentials: 'include',
         })
           .then((response) => {
             if (response.ok) {

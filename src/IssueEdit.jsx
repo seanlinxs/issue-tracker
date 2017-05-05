@@ -80,6 +80,7 @@ class IssueEdit extends React.Component {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(this.state.issue),
+      credentials: 'include',
     })
       .then((response) => {
         if (response.ok) {
@@ -223,7 +224,13 @@ class IssueEdit extends React.Component {
           <FormGroup>
             <Col smOffset={3} sm={6}>
               <ButtonToolbar>
-                <Button bsStyle="primary" type="submit">Submit</Button>
+                <Button
+                  bsStyle="primary"
+                  type="submit"
+                  disabled={!this.props.user.signedIn}
+                >
+                  Submit
+                </Button>
                 <LinkContainer to="/issues">
                   <Button bsStyle="link">Back</Button>
                 </LinkContainer>
@@ -243,6 +250,11 @@ IssueEdit.propTypes = {
   match: PropTypes.object.isRequired,
   showSuccess: PropTypes.func.isRequired,
   showError: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+};
+
+IssueEdit.defaultProps = {
+  user: { signedIn: false, name: '' },
 };
 
 const IssueEditWithToast = withToast(IssueEdit);

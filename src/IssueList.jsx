@@ -23,19 +23,25 @@ const IssueRow = (props) => {
       <td>{props.issue.effort}</td>
       <td>{props.issue.completionDate ? props.issue.completionDate.toDateString() : ''}</td>
       <td>{props.issue.title}</td>
-      <td>
-        <Button bsSize="xsmall" onClick={onDeleteClick}>
-          <Glyphicon glyph="trash" />
-        </Button>
-      </td>
+      {props.deleteIssue ? (
+        <td>
+          <Button bsSize="xsmall" onClick={onDeleteClick}>
+            <Glyphicon glyph="trash" />
+          </Button>
+        </td>
+      ) : null}
     </tr>
   );
 };
 
 IssueRow.propTypes = {
   issue: PropTypes.object.isRequired,
-  deleteIssue: PropTypes.func.isRequired,
+  deleteIssue: PropTypes.func,
 };
+
+IssueRow.defaultProps = {
+  deleteIssue: null,
+}
 
 const IssueTable = (props) => {
   const issues = props.issues.map(issue => (
@@ -57,7 +63,7 @@ const IssueTable = (props) => {
           <th>Effort</th>
           <th>Completion Date</th>
           <th>Title</th>
-          <th />
+          {props.deleteIssue ? <th /> : null}
         </tr>
       </thead>
       <tbody>
@@ -69,8 +75,12 @@ const IssueTable = (props) => {
 
 IssueTable.propTypes = {
   issues: PropTypes.array.isRequired,
-  deleteIssue: PropTypes.func.isRequired,
+  deleteIssue: PropTypes.func,
 };
+
+IssueTable.defaultProps = {
+  deleteIssue: null,
+}
 
 class IssueList extends React.Component {
   constructor() {
@@ -116,6 +126,7 @@ class IssueList extends React.Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(newIssue),
+      credentials: 'include',
     }).then((response) => {
       if (response.ok) {
         response.json().then((updatedIssue) => {
@@ -139,10 +150,14 @@ class IssueList extends React.Component {
   }
 
   deleteIssue(id) {
-    fetch(`/api/issues/${id}`, { method: 'DELETE' })
+    fetch(`/api/issues/${id}`, {
+      method: 'DELETE',
+      credentials: 'include',
+    })
       .then((response) => {
         if (!response.ok) {
-          this.props.showError('Failed to delete issue');
+          response.json()
+            .then(err => this.props.showError(`Failed to delete issue: ${err.message}`));
         } else {
           this.loadData();
         }
@@ -218,7 +233,10 @@ class IssueList extends React.Component {
           prev
           boundaryLinks
         />
-        <IssueTable issues={this.state.issues} deleteIssue={this.deleteIssue} />
+        <IssueTable
+          issues={this.state.issues}
+          deleteIssue={this.props.user.signedIn ? this.deleteIssue : null}
+        />
       </div>
     );
   }
@@ -228,6 +246,7 @@ IssueList.propTypes = {
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   showError: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
 };
 
 const IssueListWithToast = withToast(IssueList);
